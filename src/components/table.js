@@ -13,15 +13,21 @@ export function initTable(settings, onAction) {
 
     // @todo: #1.2 —  вывести дополнительные шаблоны до и после таблицы
 
-    [...before].reverse().forEach(subName => {                            
-    root[subName] = cloneTemplate(subName);            
+    [...before].reverse().forEach(subName => { 
+    const templateElement = settings[subName]; 
+    if (templateElement) { 
+        root[subName] = cloneTemplate(templateElement); 
+    }                                      
     if (root[subName] && root[subName].container) {
         root.container.prepend(root[subName].container);
         }
     });
     
-    after.forEach(subName => {                            
-    root[subName] = cloneTemplate(subName);            
+    after.forEach(subName => {       
+        const templateElement = settings[subName];
+        if (templateElement) { 
+        root[subName] = cloneTemplate(templateElement); 
+    }                
     if (root[subName] && root[subName].container) {
         root.container.append(root[subName].container);
         }
@@ -54,7 +60,7 @@ export function initTable(settings, onAction) {
               row.elements[key].textContent = item[key];
             }
          });
-           return row;
+           return row.container;
         });
         root.elements.rows.replaceChildren(...nextRows);
 
