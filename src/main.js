@@ -7,6 +7,9 @@ import { initData } from "./data.js";
 import { processFormData } from "./lib/utils.js";
 
 import { initTable } from "./components/table.js";
+
+import { initPagination } from './components/pagination.js';
+
 // @todo: подключение
 
 // Исходные данные используемые в render()
@@ -18,12 +21,10 @@ const { data, ...indexes } = initData(sourceData);
  */
 function collectState() {
   const state = processFormData(new FormData(sampleTable.container));
-
-  const rowsPerPage = parseInt(state.rowsPerPage); // приведём количество страниц к числу
-  const page = parseInt(state.page ?? 1); // номер страницы по умолчанию 1 и тоже число
+  const rowsPerPage = parseInt(state.rowsPerPage); 
+  const page = parseInt(state.page ?? 1); 
 
   return {
-    // расширьте существующий return вот так
     ...state,
     rowsPerPage,
     page,
