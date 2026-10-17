@@ -9,26 +9,29 @@
  * и собирает все вложенные элементы, у которых есть атрибут data-name,
  * в удобный объект для дальнейшего доступа к этим элементам.
  */
-export function cloneTemplate(templateId) {
-    // Находим шаблон в документе по его ID
-    const template = document.getElementById(templateId);
+export function cloneTemplate(template) {
+  if (!template) {
+    throw new Error('cloneTemplate: шаблон не найден');
+  }
 
-    // Клонируем первый дочерний элемент шаблона вместе со всеми его потомками
-    const clone = template.content.firstElementChild.cloneNode(true);
+  // 1. Клонируем содержимое шаблона
+  const clone = template.content.cloneNode(true);
 
-    // Находим все элементы с атрибутом data-name и создаем объект,
-    // где ключами являются значения data-name, а значениями - сами элементы
-    const elements = Array.from(clone.querySelectorAll('[data-name]')).reduce((acc, el) => {
-        acc[el.dataset.name] = el;
-        return acc;
-    }, {});
+  // 2. Ищем все элементы с data-name внутри клона
+  const elements = {};
+  const allElements = clone.querySelectorAll('[data-name]');
+  
+  allElements.forEach(el => {
+    const name = el.dataset.name;
+    elements[name] = el;
+  });
 
-    // Возвращаем объект с контейнером (клоном шаблона) и именованными элементами
-    return {
-        container: clone,
-        elements: elements
-    };
-}
+  // 3. ВАЖНО: Возвращаем объект с контейнером и элементами
+  return {
+    container: clone,
+    elements: elements
+  };
+} 
 
 /**
  * Преобразует объект FormData в обычный JavaScript-объект (только одиночные значения)
