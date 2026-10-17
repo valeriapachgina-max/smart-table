@@ -22,19 +22,13 @@ const { data, ...indexes } = initData(sourceData);
  * @returns {Object}
  */
 
-function collectState() {
-  const appRoot = document.querySelector("#app");
-  const formElement = appRoot.querySelector('form');
-  const state = processFormData(new FormData(formElement));
-  const rowsPerPage = parseInt(state.rowsPerPage) || 10; 
-  const page = parseInt(state.page ?? 1); 
-
-  return {
-    ...state,
-    rowsPerPage,
-    page,
-  };
-} 
+function collectState() { 
+const formElement = document.querySelector("#app form");
+const state = processFormData(new FormData(formElement)); 
+const rowsPerPage = parseInt(state.rowsPerPage) || 10; 
+const page = parseInt(state.page ?? 1);
+return { ...state, rowsPerPage, page, }; 
+}
 
 /**
  * Перерисовка состояния таблицы при любых изменениях
